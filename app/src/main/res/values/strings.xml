@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Air Horn!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_contacts">Contactos de emergencia</string>
+    <string name="title_security">Seguridad</string>
+    <string name="title_activation_settings">Configuración de activación</string>
 </resources>
