@@ -9,14 +9,11 @@ import android.os.Process
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
-import androidx.lifecycle.map
 import androidx.lifecycle.observe
 import com.squareup.seismic.ShakeDetector
 import dagger.hilt.android.AndroidEntryPoint
-import pe.edu.uesan.airhorn.models.AlertModeEvent
 import pe.edu.uesan.airhorn.sharedpreferences.SharedPreferencesRepository
 import pe.edu.uesan.airhorn.utilities.*
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,16 +31,12 @@ class ShakeService: LifecycleService(), ShakeDetector.Listener {
 
     private val shakeDetector = ShakeDetector(this);
 
-    private var shakesInFuture = 3
-
     private var lastShake = 0L
     private val timeBetweenShakes = 1000L
     private var consecutiveShakes = 0
 
     override fun onCreate() {
         super.onCreate()
-
-        subscribeThreshold()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -74,19 +67,15 @@ class ShakeService: LifecycleService(), ShakeDetector.Listener {
             consecutiveShakes = 1
         }
 
-        if (consecutiveShakes == 3) {
+        val shakesInFuture = sharedPreferencesRepository.get(SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD)
+
+        if (consecutiveShakes >= shakesInFuture) {
             startCountdownService()
 
             consecutiveShakes = 0
         }
 
         lastShake = System.currentTimeMillis()
-    }
-
-    private fun subscribeThreshold() {
-        sharedPreferencesRepository
-                .get(SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD)
-                .observe(this) { shakesInFuture = it }
     }
 
     private fun startForegroundService() {

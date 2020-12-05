@@ -33,24 +33,11 @@ class CountdownService: LifecycleService() {
 
     private var isServiceStopped = true
 
-    private var millisInFuture = 10000L
-
-    private val timer = object: CountDownTimer(millisInFuture, 1000) {
-        override fun onTick(millis: Long) {
-            millisUntilFinished.postValue(millis)
-        }
-
-        override fun onFinish() {
-            countdownEvent.postValue(CountdownEvent.COMPLETE)
-            startAlertModeService()
-            stopService()
-        }
-    }
+    private lateinit var timer: CountDownTimer
 
     override fun onCreate() {
         super.onCreate()
 
-        subscribeThreshold()
         init()
     }
 
@@ -68,15 +55,6 @@ class CountdownService: LifecycleService() {
     private fun init() {
         countdownEvent.postValue(CountdownEvent.STOP)
         millisUntilFinished.postValue(0L)
-    }
-
-    private fun subscribeThreshold() {
-        sharedPreferencesRepository
-                .get(SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD)
-                .map { it * 1000L }
-                .observe(this) {
-                    millisInFuture = it
-                }
     }
 
     private fun startForegroundService() {
@@ -124,7 +102,21 @@ class CountdownService: LifecycleService() {
     }
 
     private fun startCountdown() {
+        val millisInFuture = sharedPreferencesRepository
+                .get(SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD) * 1000L
+
         CoroutineScope(Dispatchers.Main).launch {
+            timer = object: CountDownTimer(if (millisInFuture <= 0) 10000L else millisInFuture, 1000) {
+                override fun onTick(millis: Long) {
+                    millisUntilFinished.postValue(millis)
+                }
+
+                override fun onFinish() {
+                    countdownEvent.postValue(CountdownEvent.COMPLETE)
+                    startAlertModeService()
+                    stopService()
+                }
+            }
             timer.start()
         }
     }

@@ -17,19 +17,19 @@ class ActivationSettingsViewModel @ViewModelInject internal constructor(
     val config = MediatorLiveData<Pair<String, Int>>()
 
     init {
-        config.addSource(sharedPreferencesRepository.get(SHARED_PREFERENCES_EVENT_SHAKE)) { value ->
+        config.addSource(sharedPreferencesRepository.getLiveData(SHARED_PREFERENCES_EVENT_SHAKE)) { value ->
             config.value = Pair(SHARED_PREFERENCES_EVENT_SHAKE, value)
         }
 
-        config.addSource(sharedPreferencesRepository.get(SHARED_PREFERENCES_EVENT_POWER_BUTTON)) { value ->
+        config.addSource(sharedPreferencesRepository.getLiveData(SHARED_PREFERENCES_EVENT_POWER_BUTTON)) { value ->
             config.value = Pair(SHARED_PREFERENCES_EVENT_POWER_BUTTON, value)
         }
 
-        config.addSource(sharedPreferencesRepository.get(SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD)) { value ->
+        config.addSource(sharedPreferencesRepository.getLiveData(SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD)) { value ->
             config.value = Pair(SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD, value)
         }
 
-        config.addSource(sharedPreferencesRepository.get(SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD)) { value ->
+        config.addSource(sharedPreferencesRepository.getLiveData(SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD)) { value ->
             config.value = Pair(SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD, value)
         }
     }

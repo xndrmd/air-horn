@@ -13,7 +13,7 @@ class HomeViewModel @ViewModelInject internal constructor(
         sharedPreferencesRepository: SharedPreferencesRepository
 ): ViewModel() {
     val isShakeEventAction = sharedPreferencesRepository
-            .get(SHARED_PREFERENCES_EVENT_SHAKE)
+            .getLiveData(SHARED_PREFERENCES_EVENT_SHAKE)
             .map { it == 1 }
     val title = MediatorLiveData<Any>()
     val millis = MediatorLiveData<Long>()
