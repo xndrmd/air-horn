@@ -36,6 +36,12 @@ class ShakeService: LifecycleService(), ShakeDetector.Listener {
 
     override fun onCreate() {
         super.onCreate()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel()
+        }
+
+        startForeground(NOTIFICATION_ID, notificationBuilder.build())
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -68,7 +74,7 @@ class ShakeService: LifecycleService(), ShakeDetector.Listener {
 
         val shakesInFuture = sharedPreferencesRepository.getInt(SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD)
 
-        if (consecutiveShakes >= shakesInFuture) {
+        if (consecutiveShakes >= if (shakesInFuture <= 0) 3 else shakesInFuture) {
             startCountdownService()
 
             consecutiveShakes = 0
@@ -82,19 +88,11 @@ class ShakeService: LifecycleService(), ShakeDetector.Listener {
 
         startShakeDetector()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel()
-        }
-
-        startForeground(NOTIFICATION_ID, notificationBuilder.build())
-
         notificationBuilder.setContentText("")
         notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build())
     }
 
     private fun stopService() {
-        if (isServiceStopped) return
-
         isServiceStopped = true
         // cancel notification?
         stopForeground(true)
