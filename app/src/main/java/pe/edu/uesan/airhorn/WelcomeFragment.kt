@@ -53,7 +53,6 @@ class WelcomeFragment : Fragment() {
     }
 
     private fun navigateToLogin() {
-        val action = WelcomeFragmentDirections.actionWelcomeFragmentToHomeFragment()
-        requireView().findNavController().navigate(action)
+        // TODO: navigate to login
     }
 }
