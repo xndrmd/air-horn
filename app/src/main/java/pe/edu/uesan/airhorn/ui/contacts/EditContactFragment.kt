@@ -53,7 +53,6 @@ class EditContactFragment : Fragment() {
     }
 
     private fun applyInfo(contactInfo: ContactInfo) {
-        println("being called :eyes:")
         val name: TextView = requireView().findViewById(R.id.name)
         val picture: ImageView = requireView().findViewById(R.id.picture)
 
