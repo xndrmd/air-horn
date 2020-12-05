@@ -3,18 +3,22 @@
 
     <item
         android:id="@+id/home"
+        android:enabled="true"
         android:icon="@drawable/ic_home_24"
         android:title="@string/title_home" />
     <item
         android:id="@+id/contacts"
+        android:enabled="true"
         android:icon="@drawable/ic_person_24"
         android:title="@string/title_contacts" />
     <item
         android:id="@+id/security"
+        android:enabled="true"
         android:icon="@drawable/ic_lock_24"
         android:title="@string/title_security" />
     <item
         android:id="@+id/activation_settings"
+        android:enabled="true"
         android:icon="@drawable/ic_offline_bolt_24"
         android:title="@string/title_activation_settings" />
 </menu>

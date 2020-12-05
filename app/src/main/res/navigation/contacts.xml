@@ -3,11 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contacts"
-    app:startDestination="@id/contactsFragment">
+    app:startDestination="@id/contactListFragment">
 
     <fragment
-        android:id="@+id/contactsFragment"
-        android:name="pe.edu.uesan.airhorn.ui.contacts.ContactsFragment"
+        android:id="@+id/contactListFragment"
+        android:name="pe.edu.uesan.airhorn.ui.contacts.ContactListFragment"
         android:label="fragment_contacts"
-        tools:layout="@layout/fragment_contacts" />
+        tools:layout="@layout/fragment_contact_list" >
+        <action
+            android:id="@+id/action_contactListFragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+        <action
+            android:id="@+id/action_contactListFragment_to_editContactFragment"
+            app:destination="@id/editContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addContactFragment"
+        android:name="pe.edu.uesan.airhorn.ui.contacts.AddContactFragment"
+        android:label="fragment_add_contact"
+        tools:layout="@layout/fragment_add_contact" >
+        <action
+            android:id="@+id/action_addContactFragment_to_editContactFragment"
+            app:destination="@id/editContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editContactFragment"
+        android:name="pe.edu.uesan.airhorn.ui.contacts.EditContactFragment"
+        android:label="fragment_edit_contact"
+        tools:layout="@layout/fragment_edit_contact">
+        <argument android:name="contactContentId" app:argType="string" />
+    </fragment>
 </navigation>

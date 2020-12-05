@@ -1,34 +1,26 @@
 package pe.edu.uesan.airhorn.ui.activationsettings
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_activation_settings.*
 import pe.edu.uesan.airhorn.R
+import pe.edu.uesan.airhorn.services.ShakeService
+import pe.edu.uesan.airhorn.utilities.*
+import pe.edu.uesan.airhorn.viewmodels.ActivationSettingsViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ActivationSettingsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class ActivationSettingsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val viewModel: ActivationSettingsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,23 +30,62 @@ class ActivationSettingsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_activation_settings, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ActivationSettingsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ActivationSettingsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        subscribe()
+
+        shakeEventSwitch.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.updatePreference(SHARED_PREFERENCES_EVENT_SHAKE, if (isChecked) 1 else 0)
+        }
+
+        eventsThresholdOption.setOnClickListener {
+            openDialog(
+                "Cantidad de eventos para comenzar modo alerta",
+                SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD,
+                    eventsThreshold.text.toString().toInt()
+            )
+        }
+
+        secondsThresholdOption.setOnClickListener {
+            openDialog(
+                "Cantidad de segundos antes de comenzar modo alerta",
+                SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD,
+                    secondsThreshold.text.toString().toInt()
+            )
+        }
+    }
+
+    private fun subscribe() {
+        viewModel.config.observe(viewLifecycleOwner) { preference ->
+            when (preference.first) {
+                SHARED_PREFERENCES_EVENT_SHAKE -> {
+                    val isChecked = preference.second == 1
+                    shakeEventSwitch.isChecked = isChecked
+
+                    when (isChecked) {
+                        true -> ServiceUtil.sendCommand(requireActivity(), ShakeService::class.java, ACTION_START_SERVICE)
+                        else -> ServiceUtil.sendCommand(requireActivity(), ShakeService::class.java, ACTION_STOP_SERVICE)
+                    }
                 }
+                SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD -> eventsThreshold.text = preference.second.toString()
+                SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD -> secondsThreshold.text = preference.second.toString()
             }
+        }
+    }
+
+    private fun openDialog(message: String, preference: String, threshold: Int) {
+        val layout = layoutInflater.inflate(R.layout.fragment_param_dialog, null)
+        val input: TextInputEditText = layout.findViewById(R.id.threshold)
+        input.setText(threshold.toString())
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setPositiveButton("Aceptar") { dialog, which ->
+                viewModel.updatePreference(preference, input.text.toString().toInt())
+            }
+            .setNegativeButton("Cancelar", null)
+            .setMessage(message)
+            .setView(layout)
+            .show()
     }
 }
