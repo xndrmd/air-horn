@@ -1,7 +1,5 @@
 package pe.edu.uesan.airhorn.ui.activationsettings
 
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -36,7 +34,7 @@ class ActivationSettingsFragment : Fragment() {
         subscribe()
 
         shakeEventSwitch.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.updatePreference(SHARED_PREFERENCES_EVENT_SHAKE, if (isChecked) 1 else 0)
+            viewModel.updateIntPreference(SHARED_PREFERENCES_EVENT_SHAKE, if (isChecked) 1 else 0)
         }
 
         eventsThresholdOption.setOnClickListener {
@@ -81,7 +79,7 @@ class ActivationSettingsFragment : Fragment() {
 
         MaterialAlertDialogBuilder(requireContext())
             .setPositiveButton("Aceptar") { dialog, which ->
-                viewModel.updatePreference(preference, input.text.toString().toInt())
+                viewModel.updateIntPreference(preference, input.text.toString().toInt())
             }
             .setNegativeButton("Cancelar", null)
             .setMessage(message)

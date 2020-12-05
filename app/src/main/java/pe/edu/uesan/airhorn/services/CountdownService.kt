@@ -9,7 +9,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
 import androidx.lifecycle.observe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -103,7 +102,7 @@ class CountdownService: LifecycleService() {
 
     private fun startCountdown() {
         val millisInFuture = sharedPreferencesRepository
-                .get(SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD) * 1000L
+                .getInt(SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD) * 1000L
 
         CoroutineScope(Dispatchers.Main).launch {
             timer = object: CountDownTimer(if (millisInFuture <= 0) 10000L else millisInFuture, 1000) {

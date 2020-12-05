@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/securityFragment"
         android:name="pe.edu.uesan.airhorn.ui.security.SecurityFragment"
-        android:label="fragment_security"
+        android:label="Seguridad"
         tools:layout="@layout/fragment_security" >
         <action
             android:id="@+id/action_securityFragment_to_inputPinFragment"
@@ -20,8 +20,9 @@
     <fragment
         android:id="@+id/inputPinFragment"
         android:name="pe.edu.uesan.airhorn.ui.security.InputPinFragment"
-        android:label="fragment_input_pin"
+        android:label="Seguridad"
         tools:layout="@layout/fragment_input_pin" >
+        <argument android:name="currentPin" app:argType="string" />
         <action
             android:id="@+id/action_inputPinFragment_to_choosePinFragment"
             app:destination="@id/choosePinFragment" />
@@ -29,7 +30,7 @@
     <fragment
         android:id="@+id/choosePinFragment"
         android:name="pe.edu.uesan.airhorn.ui.security.ChoosePinFragment"
-        android:label="fragment_choose_pin"
+        android:label="Seguridad"
         tools:layout="@layout/fragment_choose_pin" >
         <action
             android:id="@+id/action_choosePinFragment_to_confirmPinFragment"
@@ -38,6 +39,8 @@
     <fragment
         android:id="@+id/confirmPinFragment"
         android:name="pe.edu.uesan.airhorn.ui.security.ConfirmPinFragment"
-        android:label="fragment_confirm_pin"
-        tools:layout="@layout/fragment_confirm_pin" />
+        android:label="Seguridad"
+        tools:layout="@layout/fragment_confirm_pin">
+        <argument android:name="newPin" app:argType="string" />
+    </fragment>
 </navigation>

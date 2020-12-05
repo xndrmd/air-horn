@@ -7,6 +7,8 @@ const val SHARED_PREFERENCES_EVENT_SHAKE = "activation-settings-event-shake"
 const val SHARED_PREFERENCES_EVENT_POWER_BUTTON = "activation-settings-event-power-button"
 const val SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD = "activation-settings-params-events-threshold"
 const val SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD = "activation-settings-params-seconds-threshold"
+const val SHARED_PREFERENCES_PIN = "activation-settings-security-pin"
+const val SHARED_PREFERENCES_USE_FINGERPRINT = "activation-settings-security-use-fingerprint"
 
 const val NOTIFICATION_CHANNEL_ID = "airhorn-notification-channel"
 const val NOTIFICATION_CHANNEL_NAME = "Air Horn! Notifications"

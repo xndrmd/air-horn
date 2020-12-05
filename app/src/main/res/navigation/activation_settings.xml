@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/activationSettingsFragment"
         android:name="pe.edu.uesan.airhorn.ui.activationsettings.ActivationSettingsFragment"
-        android:label="fragment_activation_settings"
+        android:label="Activación"
         tools:layout="@layout/fragment_activation_settings" />
 </navigation>

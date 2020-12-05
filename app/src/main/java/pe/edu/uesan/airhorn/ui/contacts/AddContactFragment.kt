@@ -1,10 +1,9 @@
 package pe.edu.uesan.airhorn.ui.contacts
 
 import android.os.Bundle
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
@@ -18,9 +17,28 @@ import pe.edu.uesan.airhorn.viewmodels.ContactListAllViewModel
 @AndroidEntryPoint
 class AddContactFragment : Fragment() {
     private val viewModel: ContactListAllViewModel by viewModels()
+    private lateinit var adapter:ContactAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.contact_menu, menu)
+        val search = menu.findItem(R.id.search)
+        val searchView: SearchView = search.actionView as SearchView
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return true
+            }
+        })
     }
 
     override fun onCreateView(
@@ -34,7 +52,7 @@ class AddContactFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = ContactAdapter {
+        adapter = ContactAdapter {
             val action = AddContactFragmentDirections.actionAddContactFragmentToEditContactFragment(it.contentId)
             view.findNavController().navigate(action)
         }

@@ -13,4 +13,5 @@ class ContactListAllViewModel @ViewModelInject internal constructor(
     contactInfoRepository: ContactInfoRepository
 ): ViewModel() {
     val contacts = contactInfoRepository.getAll()
+        .map { contactsInfo -> contactsInfo.sortedBy { it.name } }
 }

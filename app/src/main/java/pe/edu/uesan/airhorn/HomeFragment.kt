@@ -39,7 +39,13 @@ class HomeFragment : Fragment() {
 
     private fun addShakeEventObserver() {
         viewModel.isShakeEventAction.observe(viewLifecycleOwner) {
-            if (it) ServiceUtil.sendCommand(requireActivity(), ShakeService::class.java, ACTION_START_SERVICE)
+            if (it) {
+                ServiceUtil.sendCommand(requireActivity(), ShakeService::class.java, ACTION_START_SERVICE)
+
+                noEventCard.visibility = View.GONE
+            } else {
+                noEventCard.visibility = View.VISIBLE
+            }
         }
     }
 

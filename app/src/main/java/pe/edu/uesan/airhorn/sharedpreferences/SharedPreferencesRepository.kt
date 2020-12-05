@@ -7,9 +7,15 @@ import javax.inject.Singleton
 class SharedPreferencesRepository @Inject constructor(
     private val sharedPreferencesSource: SharedPreferencesSource
 ) {
-    fun getLiveData(key: String) = sharedPreferencesSource.getLiveData(key)
+    fun getIntLiveData(key: String) = sharedPreferencesSource.getIntLiveData(key)
+    fun getInt(key: String) = sharedPreferencesSource.getInt(key)
+    fun putInt(key: String, value: Int) = sharedPreferencesSource.putInt(key, value)
 
-    fun get(key: String) = sharedPreferencesSource.get(key)
+    fun getStringLiveData(key: String) = sharedPreferencesSource.getStringLiveData(key)
+    fun getString(key: String) = sharedPreferencesSource.getString(key)
+    fun putString(key: String, value: String) = sharedPreferencesSource.putString(key, value)
 
-    fun put(key: String, value: Int) = sharedPreferencesSource.put(key, value)
+    fun getBooleanLiveData(key: String) = sharedPreferencesSource.getBooleanLiveData(key)
+    fun getBoolean(key: String) = sharedPreferencesSource.getBoolean(key)
+    fun putBoolean(key: String, value: Boolean) = sharedPreferencesSource.putBoolean(key, value)
 }

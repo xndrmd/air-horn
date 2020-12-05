@@ -5,11 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 import pe.edu.uesan.airhorn.R
 
 class InputPinFragment : Fragment() {
+    private val args: InputPinFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,14 +29,32 @@ class InputPinFragment : Fragment() {
         val cancel: MaterialButton = view.findViewById(R.id.btn_cancel)
         val confirm: MaterialButton = view.findViewById(R.id.btn_confirm)
 
+        val pin: TextInputEditText = view.findViewById(R.id.pin)
+
         cancel.setOnClickListener {
             val startDestination = view.findNavController().graph.startDestination
             view.findNavController().popBackStack(startDestination, false)
         }
 
         confirm.setOnClickListener {
-            val action = InputPinFragmentDirections.actionInputPinFragmentToChoosePinFragment()
-            view.findNavController().navigate(action)
+            val pinNumber = pin.text.toString()
+            pin.setText("")
+
+            when {
+                pinNumber.isEmpty() -> {
+                    Toast.makeText(requireActivity(), "Es necesario que ingrese un PIN para continuar", Toast.LENGTH_SHORT).show()
+                }
+                pinNumber.length < 4 -> {
+                    Toast.makeText(requireActivity(), "El PIN debe ser del al menos 4 dígitos", Toast.LENGTH_SHORT).show()
+                }
+                pinNumber != args.currentPin -> {
+                    Toast.makeText(requireActivity(), "PIN incorrecto", Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    val action = InputPinFragmentDirections.actionInputPinFragmentToChoosePinFragment()
+                    view.findNavController().navigate(action)
+                }
+            }
         }
     }
 }

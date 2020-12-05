@@ -17,26 +17,32 @@ class ActivationSettingsViewModel @ViewModelInject internal constructor(
     val config = MediatorLiveData<Pair<String, Int>>()
 
     init {
-        config.addSource(sharedPreferencesRepository.getLiveData(SHARED_PREFERENCES_EVENT_SHAKE)) { value ->
+        config.addSource(sharedPreferencesRepository.getIntLiveData(SHARED_PREFERENCES_EVENT_SHAKE)) { value ->
             config.value = Pair(SHARED_PREFERENCES_EVENT_SHAKE, value)
         }
 
-        config.addSource(sharedPreferencesRepository.getLiveData(SHARED_PREFERENCES_EVENT_POWER_BUTTON)) { value ->
+        config.addSource(sharedPreferencesRepository.getIntLiveData(SHARED_PREFERENCES_EVENT_POWER_BUTTON)) { value ->
             config.value = Pair(SHARED_PREFERENCES_EVENT_POWER_BUTTON, value)
         }
 
-        config.addSource(sharedPreferencesRepository.getLiveData(SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD)) { value ->
+        config.addSource(sharedPreferencesRepository.getIntLiveData(SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD)) { value ->
             config.value = Pair(SHARED_PREFERENCES_PARAMS_EVENTS_THRESHOLD, value)
         }
 
-        config.addSource(sharedPreferencesRepository.getLiveData(SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD)) { value ->
+        config.addSource(sharedPreferencesRepository.getIntLiveData(SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD)) { value ->
             config.value = Pair(SHARED_PREFERENCES_PARAMS_SECONDS_THRESHOLD, value)
         }
     }
 
-    fun updatePreference(key: String, value: Int) {
+    fun updateIntPreference(key: String, value: Int) {
         viewModelScope.launch {
-            sharedPreferencesRepository.put(key, value)
+            sharedPreferencesRepository.putInt(key, value)
+        }
+    }
+
+    fun updateBooleanPreference(key: String, value: Boolean) {
+        viewModelScope.launch {
+            sharedPreferencesRepository.putBoolean(key, value)
         }
     }
 }

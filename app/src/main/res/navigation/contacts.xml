@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/contactListFragment"
         android:name="pe.edu.uesan.airhorn.ui.contacts.ContactListFragment"
-        android:label="fragment_contacts"
+        android:label="Contactos de emergencia"
         tools:layout="@layout/fragment_contact_list" >
         <action
             android:id="@+id/action_contactListFragment_to_addContactFragment"
@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/addContactFragment"
         android:name="pe.edu.uesan.airhorn.ui.contacts.AddContactFragment"
-        android:label="fragment_add_contact"
+        android:label="Contactos"
         tools:layout="@layout/fragment_add_contact" >
         <action
             android:id="@+id/action_addContactFragment_to_editContactFragment"
@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/editContactFragment"
         android:name="pe.edu.uesan.airhorn.ui.contacts.EditContactFragment"
-        android:label="fragment_edit_contact"
+        android:label="Modificar contacto"
         tools:layout="@layout/fragment_edit_contact">
         <argument android:name="contactContentId" app:argType="string" />
     </fragment>

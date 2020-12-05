@@ -17,7 +17,7 @@ class ContactListViewModel @ViewModelInject internal constructor(
                     contact.contentId == contactWithPhones.contact.contentId &&
                     contact.phoneNumbers.any { phoneNumber -> contactWithPhones.phones.any { phone -> phone.contentId == phoneNumber.contentId } }
                 }
-            }
+            }.sortedBy { it.name }
         }
     }
 }

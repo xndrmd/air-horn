@@ -7,6 +7,26 @@
     tools:context=".HomeFragment">
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/noEventCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:id="@+id/noEventTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:text="No se ha suscrito a ningún evento" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/alertCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
